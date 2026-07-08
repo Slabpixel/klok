@@ -1,4 +1,5 @@
 import Image from "next/image";
+import HeroSlider from "@/components/hero-slider";
 
 export default function Home() {
   return (
@@ -33,41 +34,7 @@ export default function Home() {
               <div
                 className="absolute inset-0 border-y border-border bg-muted bg-center bg-size-[2.5rem_2.5rem] bg-[linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)]"
               />
-              <div className="relative w-full h-full flex justify-center gap-20">
-                <div className="relative aspect-9/10 h-[65%] p-5 flex flex-col justify-between">
-                  <Image src="/img-1.png" alt="" fill className="object-cover"/>
-                  <div className="absolute inset-0 bg-muted/70"></div>
-                </div>
-                <div className="relative aspect-9/10 h-[65%] p-5 flex flex-col justify-between">
-                  <Image src="/img-2.png" alt="" fill className="object-cover"/>
-                  <div className="absolute inset-0 bg-muted/70"></div>
-                </div>
-                <div className="relative aspect-9/10 h-[90%] p-5 flex flex-col justify-between">
-                  <Image src="/img-3.png" alt="" fill className="object-cover"/>
-                  <div className="absolute inset-0" style={{background: "linear-gradient(180deg, #F9FAFB -9.77%, rgba(249, 250, 251, 0.00) 43.23%)"}}>
-
-                  </div>
-                  <div className="relative flex flex-col gap-1.5 text-sm font-medium leading-none tracking-[-0.02em]">
-                    <div className="flex justify-between items-center">
-                      <span>Klok Series</span>
-                      <span>-01</span>
-                    </div>
-                    <span className="opacity-50">Lounge Chair</span>
-                  </div>
-                  <div className="relative flex justify-between items-center">
-                    <Image src="/plus.svg" alt="" width={14} height={14} />
-                    <Image src="/plus.svg" alt="" width={14} height={14} />
-                  </div>
-                </div>
-                <div className="relative aspect-9/10 h-[65%] p-5 flex flex-col justify-between">
-                  <Image src="/img-4.png" alt="" fill className="object-cover"/>
-                  <div className="absolute inset-0 bg-muted/70"></div>
-                </div>
-                <div className="relative aspect-9/10 h-[65%] p-5 flex flex-col justify-between">
-                  <Image src="/img-5.png" alt="" fill className="object-cover"/>
-                  <div className="absolute inset-0 bg-muted/70"></div>
-                </div>
-              </div>
+              <HeroSlider />
             </div>
           </div>
         </div>
