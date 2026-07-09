@@ -136,11 +136,6 @@ export default function Highlight() {
                 duration: 1,
                 ease: "power3.out",
             });
-            tl.to(topButton, {
-                clipPath: clipVisible,
-                duration: 0.4,
-                ease: "power2.out",
-            });
             tl.to(
                 textItems,
                 {
@@ -149,7 +144,16 @@ export default function Highlight() {
                     stagger: 0.05,
                     ease: "power2.out",
                 },
-                "<",
+                "<+=0.2",
+            );
+            tl.to(
+                topButton,
+                {
+                    clipPath: clipVisible,
+                    duration: 0.4,
+                    ease: "power2.out",
+                },
+                "<+=0.05",
             );
             tl.to(
                 bottomButton,
