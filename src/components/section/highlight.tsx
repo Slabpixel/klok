@@ -18,26 +18,44 @@ const slides = [
     { text: "Honoring the Past", image: "/img-1.png" },
 ];
 
-function ProgressiveText({ text, active }: { text: string; active: boolean }) {
+function getFocusValues(y: number, offsets: number[]) {
+    const span = Math.max(Math.abs(offsets[0] - offsets[1]), 1) * 0.55;
+
+    return offsets.map((offset) => {
+        const dist = Math.abs(y - offset);
+        if (dist >= span) return 0;
+
+        const t = 1 - dist / span;
+        return t * t * (3 - 2 * t);
+    });
+}
+
+function ProgressiveText({ text, focus }: { text: string; focus: number }) {
+    const opacity = 0.4 + 0.6 * focus;
+    const sharpOpacity = focus;
+    const blurOpacity = 1 - focus;
+
     return (
         <div
-            className={`relative shrink-0 text-[10.5cqw] font-medium text-center leading-[1.1] transition-opacity duration-300 ${
-                active
-                    ? "opacity-100"
-                    : "opacity-40 mask-[linear-gradient(to_bottom,transparent_-32%,black_81%)]"
-            }`}
+            className="relative shrink-0 text-[10.5cqw] font-medium text-center leading-[1.1]"
+            style={{ opacity }}
         >
-            <span className={active ? "" : "text-transparent"}>{text}</span>
-            {!active &&
-                blurLayers.map((layer) => (
+            <span style={{ opacity: sharpOpacity }}>{text}</span>
+            <span
+                aria-hidden
+                className="absolute inset-0 mask-[linear-gradient(to_bottom,transparent_-32%,black_81%)]"
+                style={{ opacity: blurOpacity }}
+            >
+                <span className="text-transparent">{text}</span>
+                {blurLayers.map((layer) => (
                     <span
                         key={layer.blur}
-                        aria-hidden
                         className={`absolute inset-0 ${layer.blur} ${layer.mask}`}
                     >
                         {text}
                     </span>
                 ))}
+            </span>
         </div>
     );
 }
@@ -65,6 +83,7 @@ export default function Highlight() {
     const topButtonRef = useRef<HTMLButtonElement>(null);
     const bottomButtonRef = useRef<HTMLButtonElement>(null);
     const [activeIndex, setActiveIndex] = useState(0);
+    const [focusValues, setFocusValues] = useState<number[]>(() => slides.map((_, i) => (i === 0 ? 1 : 0)));
 
     useGSAP(
         () => {
@@ -118,9 +137,16 @@ export default function Highlight() {
                     invalidateOnRefresh: true,
                     onUpdate: () => {
                         const time = tl.time();
-                        if (time < tl.labels["item-1"]) setActiveIndex(0);
-                        else if (time < tl.labels["item-2"]) setActiveIndex(1);
-                        else setActiveIndex(2);
+                        if (time < tl.labels["item-0"]) return;
+
+                        const y = gsap.getProperty(textTrack, "y") as number;
+                        const offsets = getTextOffsets(textTrack, textViewport);
+                        const focus = getFocusValues(y, offsets);
+
+                        setFocusValues(focus);
+                        setActiveIndex(
+                            focus.indexOf(Math.max(...focus)),
+                        );
                     },
                 },
             });
@@ -176,31 +202,33 @@ export default function Highlight() {
             );
 
             tl.addLabel("item-0");
-            tl.to({}, { duration: 0.6 });
+            tl.to({}, { duration: 0.4 });
 
             tl.addLabel("item-1");
             tl.to(textTrack, {
                 y: () => getTextOffsets(textTrack, textViewport)[1],
-                duration: 1,
+                duration: 0.6,
+                ease: "sine.out",
             });
             tl.to(
                 images[1],
-                { clipPath: clipVisible, duration: 0.8, ease: "power2.inOut" },
-                "<+=0.1",
+                { clipPath: clipVisible, duration: 1.2, ease: "sine.out" },
+                "<",
             );
-            tl.to({}, { duration: 0.6 });
+            tl.to({}, { duration: 0.4 });
 
             tl.addLabel("item-2");
             tl.to(textTrack, {
                 y: () => getTextOffsets(textTrack, textViewport)[2],
-                duration: 1,
+                duration: 0.6,
+                ease: "sine.out",
             });
             tl.to(
                 images[2],
-                { clipPath: clipVisible, duration: 0.8, ease: "power2.inOut" },
-                "<+=0.1",
+                { clipPath: clipVisible, duration: 1.2, ease: "sine.out" },
+                "<",
             );
-            tl.to({}, { duration: 0.6 });
+            tl.to({}, { duration: 0.4 });
 
             tl.addLabel("item-2-end");
 
@@ -301,7 +329,7 @@ export default function Highlight() {
                                     >
                                         <ProgressiveText
                                             text={slide.text}
-                                            active={activeIndex === index}
+                                            focus={focusValues[index] ?? 0}
                                         />
                                     </div>
                                 ))}
