@@ -4,7 +4,7 @@ import Image from "next/image";
 export default function Navbar() {
     return (
         <nav className="fixed top-10 left-0 right-0 z-50">
-            <div className="mx-auto bg-white w-full max-w-8xl px-5 sm:px-6 md:px-8 lg:px-10">
+            <div className="mx-auto w-full max-w-8xl px-5 sm:px-6 md:px-8 lg:px-10">
                 <div className="flex w-full items-center justify-between">
                     <Link href="/">
                         <Image src="/logo.svg" alt="Klok" width={83} height={24} />

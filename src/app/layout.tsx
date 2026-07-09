@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Hanken_Grotesk } from "next/font/google";
+import "lenis/dist/lenis.css";
 import "./globals.css";
 import SmoothScroll from "@/components/smooth-scroll";
 import Navbar from "@/components/navbar";
