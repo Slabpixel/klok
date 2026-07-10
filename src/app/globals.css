@@ -7,6 +7,7 @@
   --border: #E2E8F0;
   --muted: #F9FAFB;
   --accent: #8C5D37;
+  --secondary: #F1D7B7;
 }
 
 @theme inline {
@@ -16,6 +17,8 @@
   --color-border: var(--border);
   --color-muted: var(--muted);
   --color-accent: var(--accent);
+  --color-secondary: var(--secondary);
+
   --font-sans: var(--font-hanken-grotesk);
 
   --spacing-8xl: 90rem;
